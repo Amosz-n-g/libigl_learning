@@ -1,3 +1,0 @@
-/home/pandoras_wiki/geometryprocessing/libigl/tutorial/HeatGeo2Point/build/CMakeFiles/my_app.dir
-/home/pandoras_wiki/geometryprocessing/libigl/tutorial/HeatGeo2Point/build/CMakeFiles/edit_cache.dir
-/home/pandoras_wiki/geometryprocessing/libigl/tutorial/HeatGeo2Point/build/CMakeFiles/rebuild_cache.dir
