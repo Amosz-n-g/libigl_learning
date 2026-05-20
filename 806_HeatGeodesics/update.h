@@ -13,7 +13,7 @@ bool update(
   const double y1,
   const double x2,
   const double y2,
-  const Eigen::Matrix4f& model,
+  const Eigen::Matrix4f& view,
   const Eigen::Matrix4f& proj,
   const Eigen::Vector4f& viewport,
   const igl::HeatGeodesicsData<double>& data,

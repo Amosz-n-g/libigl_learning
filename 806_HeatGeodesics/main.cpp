@@ -4,13 +4,22 @@
 #include <igl/heat_geodesics.h>
 #include <igl/avg_edge_length.h>
 #include <igl/opengl/glfw/Viewer.h>
+#include <cstdlib>
 #include <iostream>
 
 int main(int argc, char *argv[])
 {
+  const char* mesh_path = (argc > 1) ? argv[1] : DEFAULT_MESH;
+
   Eigen::MatrixXi F;
   Eigen::MatrixXd V;
-  igl::read_triangle_mesh( argc>1?argv[1]: TUTORIAL_SHARED_PATH "/beetle.off",V,F);
+  if(!igl::read_triangle_mesh(mesh_path, V, F))
+  {
+    std::cerr<<"Error: could not read mesh: "<<mesh_path<<std::endl;
+    std::cerr<<"Usage: "<<argv[0]<<" [triangle_mesh]\n";
+    std::cerr<<"  default: "<<DEFAULT_MESH<<"\n";
+    return EXIT_FAILURE;
+  }
   double t = std::pow(igl::avg_edge_length(V,F),2);
   double x1 = 0; double x2 = 0; double y1 = 0; double y2 = 0; 
   // Precomputation
@@ -29,9 +38,10 @@ int main(int argc, char *argv[])
   bool down_on_mesh = false;
   const auto update = [&]()->bool
   {
-    x1 = x2; y1 = y2; 
-    const double x2 = viewer.current_mouse_x;
-    const double y2 = viewer.core().viewport(3) - viewer.current_mouse_y;
+    const double mx = viewer.current_mouse_x;
+    const double my = viewer.core().viewport(3) - viewer.current_mouse_y;
+    x1 = x2; y1 = y2;
+    x2 = mx; y2 = my;
     Eigen::VectorXd D;
     if(::update(
       V,F,t,x1,y1,x2,y2,
@@ -70,7 +80,7 @@ int main(int argc, char *argv[])
     down_on_mesh = false;
     return false;
   };
-  std::cout<<R"(Usage:
+  std::cout<<R"(Controls:
   [click]  Click on shape to pick new geodesic distance source
   ,/.      Decrease/increase t by factor of 10.0
   D,d      Toggle using intrinsic Delaunay discrete differential operators
